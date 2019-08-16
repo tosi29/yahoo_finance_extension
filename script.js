@@ -1,13 +1,15 @@
 var table_div = document.getElementById("refreshPortfolioTable");
-var td_all = table_div.getElementsByTagName("td");
+if (table_div != null) {
+	var tables = table_div.getElementsByTagName("table");
+	new Tablesort(tables[0]);
 
-var tables = table_div.getElementsByTagName("table");
-new Tablesort(tables[0]);
+	var td_all = table_div.getElementsByTagName("td");
 
-for(var i=0; i<td_all.length; i++) {
-	td_all[i] = signed_percent_style(td_all[i]);
-	td_all[i] = dividend_style(td_all[i]);
-	td_all[i] = debt_ratio_style(td_all[i]);
+	for(var i=0; i<td_all.length; i++) {
+		td_all[i] = signed_percent_style(td_all[i]);
+		td_all[i] = dividend_style(td_all[i]);
+		td_all[i] = debt_ratio_style(td_all[i]);
+	}
 }
 
 function debt_ratio_style(element) {
