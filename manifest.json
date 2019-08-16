@@ -1,0 +1,14 @@
+﻿{
+  "name": "YahooFinanceHeatmap",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "Yahoo! Financeで、ヒートマップっぽくしてくれる",
+  "content_scripts": [
+    {
+      "matches": ["https://info.finance.yahoo.co.jp/*"],
+      "js": ["tablesort_custom.js","script.js"],
+	  "css": ["tablesort.css"],
+	  "run_at": "document_idle"
+    }
+  ]
+}
