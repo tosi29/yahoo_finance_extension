@@ -14,5 +14,7 @@ Yahoo Financeのポートフォリオのテーブル機能を拡張する、Goog
 
 
 ## LICENSE
+MIT
+
 This extension contains MIT license software as follows:
 - tablesort：https://github.com/tristen/tablesort
