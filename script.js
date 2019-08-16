@@ -1,5 +1,4 @@
 var table_div = document.getElementById("refreshPortfolioTable");
-//var td_all = document.getElementsByTagName("td");
 var td_all = table_div.getElementsByTagName("td");
 
 var tables = table_div.getElementsByTagName("table");
@@ -12,7 +11,7 @@ for(var i=0; i<td_all.length; i++) {
 	
 	//パーセント表記のマッチ
 	if (text.match(/([\+\-])([0-9]{1,})\.[0-9]{1,}%/)) {
-		var posinega = RegExp.$1;
+		var sign = RegExp.$1;
 		var percent = parseInt(RegExp.$2);
 		var color;
 		var bgcolor;
@@ -46,11 +45,11 @@ for(var i=0; i<td_all.length; i++) {
 		}
 
 
-		if (posinega == "+") {
+		if (sign == "+") {
 			bgcolor = "#" + color + color + "FF";
 		}
 
-		if (posinega == "-") {
+		if (sign == "-") {
 			bgcolor = "#" + "FF" + color + color;
 		}
 		
