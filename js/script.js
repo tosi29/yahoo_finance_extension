@@ -27,7 +27,7 @@ function debt_ratio_style(element) {
 
 function signed_percent_style(element) {
 	var text = element.innerText
-	if (text.match(/([\+\-])([0-9]{1,}\.[0-9]{1,})%/)) {
+	if (text.match(/^([\+\-])([0-9]{1,}\.[0-9]{1,})%/)) {
 		var sign = RegExp.$1;
 		var percent = parseFloat(RegExp.$2);
 		var color = gradation(percent, 30);
