@@ -60,7 +60,7 @@ function dividend_style(element) {
 }
 
 
-function gradation(value, max = 100) {
+function gradation(value, max) {
 	if (value > max) {
 		value = max;
 	}
@@ -70,6 +70,6 @@ function gradation(value, max = 100) {
 	return color;
 }
 
-function gradation_desc(value, max = 100) {
+function gradation_desc(value, max) {
 	return gradation(max - value, max);
 }
