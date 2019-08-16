@@ -1,12 +1,12 @@
 ﻿{
-  "name": "YahooFinanceHeatmap",
+  "name": "Yahoo Finance Extension",
   "version": "0.0.1",
   "manifest_version": 2,
-  "description": "Yahoo! Financeで、ヒートマップっぽくしてくれる",
+  "description": "Yahoo Financeのポートフォリオテーブルに機能を付ける",
   "content_scripts": [
     {
       "matches": ["https://info.finance.yahoo.co.jp/*"],
-      "js": ["tablesort_custom.js","script.js"],
+      "js": ["tablesort_custom.js", "script.js"],
 	  "css": ["tablesort.css"],
 	  "run_at": "document_idle"
     }
