@@ -67,7 +67,6 @@ function gradation(value, max = 100) {
 
 	var scale = 100.0 / max * 2
 	var color = parseInt((255 - value * scale)).toString(16);
-	console.log(color);
 	return color;
 }
 
