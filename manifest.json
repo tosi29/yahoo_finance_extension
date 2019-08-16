@@ -7,8 +7,8 @@
     {
       "matches": ["https://info.finance.yahoo.co.jp/*"],
       "js": ["tablesort_custom.js", "script.js"],
-	  "css": ["tablesort.css"],
-	  "run_at": "document_idle"
+	    "css": ["tablesort.css"],
+	    "run_at": "document_idle"
     }
   ]
 }
