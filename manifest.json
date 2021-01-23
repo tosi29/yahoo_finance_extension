@@ -1,6 +1,6 @@
 ﻿{
-  "name": "Yahoo Finance Extension",
-  "version": "0.1.0",
+  "name": "YF Extended View",
+  "version": "0.1.2",
   "manifest_version": 2,
   "description": "Yahoo Financeのポートフォリオテーブルに色を付けたり、カラムでソートできるようになる、非公式拡張です。",
   "author": "tosi",
@@ -11,7 +11,7 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://info.finance.yahoo.co.jp/*"],
+      "matches": ["https://info.finance.yahoo.co.jp/portfolio/display/*"],
       "js": ["js/tablesort_custom.js", "js/script.js"],
 	    "css": ["css/tablesort.css"],
 	    "run_at": "document_idle"
