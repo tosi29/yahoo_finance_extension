@@ -1,8 +1,8 @@
 ﻿{
-  "name": "YF Extended View",
-  "version": "0.1.2",
+  "name": "Yahoo! Finance Extended View",
+  "version": "0.2.0",
   "manifest_version": 2,
-  "description": "Yahoo Financeのポートフォリオテーブルに色を付けたり、カラムでソートできるようになる、非公式拡張です。",
+  "description": "Yahoo!ファイナンスのポートフォリオテーブルに色を付けたり、カラムでソートできるようになる、非公式拡張です。",
   "author": "tosi",
   "icons": {
     "16": "icon/16.png",
