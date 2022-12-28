@@ -31,8 +31,12 @@
   var caseInsensitiveSort = function(a, b) {
     a = a.trim().toLowerCase();
     b = b.trim().toLowerCase();
-    a = Number(a.replace(/百万円/g, "").replace(/[%株,円倍]/g, "").replace(/---/g, "").replace(/\(単\)/g, "").replace(/\(連\)/g, ""));	// custom
-    b = Number(b.replace(/百万円/g, "").replace(/[%株,円倍]/g, "").replace(/---/g, "").replace(/\(単\)/g, "").replace(/\(連\)/g, ""));	// custom
+    // start: custom
+    number_a = Number(a.replace(/百万円/g, "").replace(/[%株,円倍]/g, "").replace(/---/g, "").replace(/\(単\)/g, "").replace(/\(連\)/g, ""));
+    number_b = Number(b.replace(/百万円/g, "").replace(/[%株,円倍]/g, "").replace(/---/g, "").replace(/\(単\)/g, "").replace(/\(連\)/g, ""));
+    a = !Number.isNaN(number_a) ? number_a : a
+    b = !Number.isNaN(number_b) ? number_b : b
+    // end: custom
     
     if (a === b) return 0;
     if (a < b) return 1;
