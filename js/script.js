@@ -64,15 +64,7 @@ Array.prototype.forEach.call(body_dl_list, function(target) {
 	target.append(a)
 })
 
-/*
-var table_div = document.getElementById("refreshPortfolioTable");
-if (table_div != null) {
-	var tables = table_div.getElementsByTagName("table");
-	new Tablesort(tables[0]);
-*/
-
-
-
+new Tablesort(table)
 Array.prototype.forEach.call(body_td_list, function(target) {
 	signed_percent_style(target);
 	dividend_style(target);
