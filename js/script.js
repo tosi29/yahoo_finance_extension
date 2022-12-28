@@ -1,4 +1,4 @@
-var table = document.getElementById("list");
+const table = document.getElementById("list");
 const thead = table.getElementsByTagName("thead")[0];
 const tbody = table.getElementsByTagName("tbody")[0];
 
@@ -33,6 +33,11 @@ Array.prototype.forEach.call(body_span_list, function(target) {
 		target.remove()
 		return
 	}
+	// 年月日を削除（年初来安値など）
+	if (target.textContent.match(/^[1-9][0-9]\/[0-1][0-9]\/[0-3][0-9]$/)) {
+		target.remove()
+		return
+	}
 	// 年月を削除
 	if (target.textContent.match(/^20[1-9][0-9]\/[0-1][0-9]$/)) {
 		target.remove()
@@ -64,16 +69,9 @@ var table_div = document.getElementById("refreshPortfolioTable");
 if (table_div != null) {
 	var tables = table_div.getElementsByTagName("table");
 	new Tablesort(tables[0]);
-
-	var td_all = table_div.getElementsByTagName("td");
-
-	for(var i=0; i<td_all.length; i++) {
-		td_all[i] = signed_percent_style(td_all[i]);
-		td_all[i] = dividend_style(td_all[i]);
-		td_all[i] = debt_ratio_style(td_all[i]);
-	}
-}
 */
+
+
 
 Array.prototype.forEach.call(body_td_list, function(target) {
 	signed_percent_style(target);
