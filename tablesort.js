@@ -23,19 +23,25 @@
     return evt;
   };
 
-  var getInnerText = function(el) {
-    return el.getAttribute('data-sort') || el.textContent || el.innerText || '';
+  var getInnerText = function(el,options) {
+    return el.getAttribute(options.sortAttribute || 'data-sort') || el.textContent || el.innerText || '';
   };
 
   // Default sort method if no better sort method is found
   var caseInsensitiveSort = function(a, b) {
-    a = a.toLowerCase();
-    b = b.toLowerCase();
+    a = a.trim().toLowerCase();
+    b = b.trim().toLowerCase();
 
     if (a === b) return 0;
     if (a < b) return 1;
 
     return -1;
+  };
+
+  var getCellByKey = function(cells, key) {
+    return [].slice.call(cells).find(function(cell) {
+      return cell.getAttribute('data-sort-column-key') === key;
+    });
   };
 
   // Stable sort function
@@ -82,7 +88,7 @@
       if (el.rows && el.rows.length > 0) {
         if (el.tHead && el.tHead.rows.length > 0) {
           for (i = 0; i < el.tHead.rows.length; i++) {
-            if (el.tHead.rows[i].classList.contains("sort-row")) {
+            if (el.tHead.rows[i].getAttribute('data-sort-method') === 'thead') {
               firstRow = el.tHead.rows[i];
               break;
             }
@@ -100,8 +106,7 @@
 
       var onClick = function() {
         if (that.current && that.current !== this) {
-          that.current.classList.remove('sort-up');
-          that.current.classList.remove('sort-down');
+          that.current.removeAttribute('aria-sort');
         }
 
         that.current = this;
@@ -111,12 +116,12 @@
       // Assume first row is the header and attach a click handler to each.
       for (i = 0; i < firstRow.cells.length; i++) {
         cell = firstRow.cells[i];
-        if (!cell.classList.contains('no-sort')) {
-          cell.classList.add('sort-header');
+        cell.setAttribute('role','columnheader');
+        if (cell.getAttribute('data-sort-method') !== 'none') {
           cell.tabindex = 0;
           cell.addEventListener('click', onClick, false);
 
-          if (cell.classList.contains('sort-default')) {
+          if (cell.getAttribute('data-sort-default') !== null) {
             defaultSort = cell;
           }
         }
@@ -130,43 +135,45 @@
 
     sortTable: function(header, update) {
       var that = this,
+          columnKey = header.getAttribute('data-sort-column-key'),
           column = header.cellIndex,
           sortFunction = caseInsensitiveSort,
           item = '',
           items = [],
           i = that.thead ? 0 : 1,
-          sortDir,
           sortMethod = header.getAttribute('data-sort-method'),
-          sortOrder = header.getAttribute('data-sort-order');
+          sortOrder = header.getAttribute('aria-sort');
 
       that.table.dispatchEvent(createEvent('beforeSort'));
 
-      // If updating an existing sort `sortDir` should remain unchanged.
-      if (update) {
-        sortDir = header.classList.contains('sort-up') ? 'sort-up' : 'sort-down';
-      } else {
-        if (header.classList.contains('sort-up')) {
-          sortDir = 'sort-down';
-        } else if (header.classList.contains('sort-down')) {
-          sortDir = 'sort-up';
-        } else if (sortOrder === 'asc') {
-          sortDir = 'sort-down';
-        } else if (sortOrder === 'desc') {
-          sortDir = 'sort-up';
+      // If updating an existing sort, direction should remain unchanged.
+      if (!update) {
+        if (sortOrder === 'ascending') {
+          sortOrder = 'descending';
+        } else if (sortOrder === 'descending') {
+          sortOrder = 'ascending';
         } else {
-          sortDir = that.options.descending ? 'sort-up' : 'sort-down';
+          sortOrder = that.options.descending ? 'descending' : 'ascending';
         }
 
-        header.classList.remove(sortDir === 'sort-down' ? 'sort-up' : 'sort-down');
-        header.classList.add(sortDir);
+        header.setAttribute('aria-sort', sortOrder);
       }
 
       if (that.table.rows.length < 2) return;
 
       // If we force a sort method, it is not necessary to check rows
       if (!sortMethod) {
+        var cell;
         while (items.length < 3 && i < that.table.tBodies[0].rows.length) {
-          item = getInnerText(that.table.tBodies[0].rows[i].cells[column]);
+          if(columnKey) {
+            cell = getCellByKey(that.table.tBodies[0].rows[i].cells, columnKey);
+          } else {
+            cell = that.table.tBodies[0].rows[i].cells[column];
+          }
+
+          // Treat missing cells as empty cells
+          item = cell ? getInnerText(cell,that.options) : "";
+
           item = item.trim();
 
           if (item.length > 0) {
@@ -205,16 +212,23 @@
         if (that.table.tBodies[i].rows.length < 2) continue;
 
         for (j = 0; j < that.table.tBodies[i].rows.length; j++) {
+          var cell;
+
           item = that.table.tBodies[i].rows[j];
-          if (item.classList.contains('no-sort')) {
+          if (item.getAttribute('data-sort-method') === 'none') {
             // keep no-sorts in separate list to be able to insert
             // them back at their original position later
             noSorts[totalRows] = item;
           } else {
+            if (columnKey) {
+              cell = getCellByKey(item.cells, columnKey);
+            } else {
+              cell = item.cells[that.col];
+            }
             // Save the index for stable sorting
             newRows.push({
               tr: item,
-              td: getInnerText(item.cells[that.col]),
+              td: cell ? getInnerText(cell,that.options) : '',
               index: totalRows
             });
           }
@@ -223,11 +237,11 @@
         // Before we append should we reverse the new array or not?
         // If we reverse, the sort needs to be `anti-stable` so that
         // the double negatives cancel out
-        if (sortDir === 'sort-down') {
+        if (sortOrder === 'descending') {
           newRows.sort(stabilize(sortFunction, true));
-          newRows.reverse();
         } else {
           newRows.sort(stabilize(sortFunction, false));
+          newRows.reverse();
         }
 
         // append rows that already exist rather than creating new ones
