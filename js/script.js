@@ -68,22 +68,9 @@ new Tablesort(table)
 Array.prototype.forEach.call(body_td_list, function(target) {
 	signed_percent_style(target);
 	dividend_style(target);
-	debt_ratio_style(target);
 	capital_percent_style(target);
 })
 
-function debt_ratio_style(element) {
-	var text = element.innerText;
-	if (text.match(/^0\.([0-9]{1,})倍/)) {
-		var percent = parseInt(RegExp.$1);
-		var color;
-		var bgcolor;
-
-		color = gradation_desc(percent, 100);
-		bgcolor = "#" + "FF" + color + color;
-		td_all[i].setAttribute("bgcolor", bgcolor);
-	}
-}
 
 // ±30%以内のパーセント表示の背景をグラデーション表示する。
 // 配当利回り、前日比などの書き換えを想定。
